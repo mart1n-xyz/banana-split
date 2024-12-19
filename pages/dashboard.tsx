@@ -253,40 +253,6 @@ export default function Dashboard() {
     );
   };
 
-  const DebugTab = () => (
-    <div className="max-w-xl mx-auto p-4">
-      <MessageSigner activeTab="Debug" />
-      <div className="space-y-4">
-        <div className="flex flex-col gap-4">
-          <button
-            onClick={async () => {
-              const token = await getAccessToken();
-              console.log("Access token:", token);
-            }}
-            className="font-['Fondamento'] bg-[#4A2B1B] text-[#FFF5EA] py-2 px-4 rounded-lg hover:bg-[#3A1F14]"
-          >
-            Log access token
-          </button>
-          <button
-            onClick={async () => {
-              const response = await verifyToken();
-              console.log("Verification response:", response);
-            }}
-            className="font-['Fondamento'] bg-[#4A2B1B] text-[#FFF5EA] py-2 px-4 rounded-lg hover:bg-[#3A1F14]"
-          >
-            Verify access token
-          </button>
-        </div>
-        <div>
-          <h2 className="text-xl font-fondamento text-[#4A2B1B] mb-2">User Object:</h2>
-          <pre className="font-['Fondamento'] bg-white/50 p-4 rounded-lg overflow-auto text-[#4A2B1B]">
-            {JSON.stringify(user, null, 2)}
-          </pre>
-        </div>
-      </div>
-    </div>
-  );
-
   const LinkLogTab = () => {
     const [signature, setSignature] = useState<string>('');
     const [isValid, setIsValid] = useState<boolean | null>(null);
