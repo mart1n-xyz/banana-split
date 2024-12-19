@@ -6,15 +6,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Adelle Sans', ...defaultTheme.fontFamily.sans],
-      },
-      colors: {
-        'privy-navy': '#160B45',
-        'privy-light-blue': '#EFF1FD',
-        'privy-blueish': '#D4D9FC',
-        'privy-pink': '#FF8271',
+        'lobster': ['Lobster', 'cursive'],
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [],
 };

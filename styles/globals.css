@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Make the background color rule more specific */
+html, body, #__next {
+  @apply bg-[#FFF5EA];
+}
+
 @layer base {
   /* normal */
   @font-face {
