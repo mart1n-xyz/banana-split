@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { usePrivy } from "@privy-io/react-auth";
 import Head from "next/head";
 import Link from "next/link";
@@ -60,4 +59,17 @@ export default function Debug() {
       </main>
     </>
   );
+} 
+
+// Add verifyToken function
+async function verifyToken() {
+  const url = "/api/verify";
+  const accessToken = await getAccessToken();
+  const result = await fetch(url, {
+    headers: {
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined),
+    },
+  });
+
+  return await result.json();
 } 

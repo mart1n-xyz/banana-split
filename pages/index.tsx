@@ -3,7 +3,7 @@ import { PrivyClient } from "@privy-io/server-auth";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const cookieAuthToken = req.cookies["privy-token"];
