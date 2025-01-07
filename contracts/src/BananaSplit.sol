@@ -1,59 +1,47 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
+import {ECDSA} from "lib/openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol";
+import {MessageHashUtils} from "lib/openzeppelin-contracts/contracts/utils/cryptography/MessageHashUtils.sol";
+
 contract BananaSplit {
     struct User {
         bytes32 eHash;
-        bytes32 pubKey;
+        address addr;
         bool exists;
     }
     
-    mapping(bytes32 => User) public users;
+    mapping(bytes32 => User) public usersByHash;    // eHash -> User
+    mapping(address => bytes32) public usersByAddr;  // address -> eHash
     
-    event UserRegistered(bytes32 indexed eHash);
+    event UserRegistered(bytes32 indexed eHash, address indexed addr);
     
-    function registerUser(bytes32 eHash, bytes32 pubKey) external {
-        require(!users[eHash].exists, "User already registered");
+    function registerUser(bytes32 eHash, address addr) external {
+        require(!usersByHash[eHash].exists, "Hash already registered");
+        require(usersByAddr[addr] == bytes32(0), "Address already registered");
         
-        users[eHash] = User({
+        usersByHash[eHash] = User({
             eHash: eHash,
-            pubKey: pubKey,
+            addr: addr,
             exists: true
         });
+        usersByAddr[addr] = eHash;
         
-        emit UserRegistered(eHash);
+        emit UserRegistered(eHash, addr);
     }
 
     function verifySignature(
         bytes32 eHash,
         bytes32 message,
         bytes32 r,
-        bytes32 s
-    ) external view returns (bool) {
-        require(users[eHash].exists, "User not registered");
-        
-        // Get the public key for the user
-        bytes32 pubKey = users[eHash].pubKey;
-        
-        // Perform signature verification
-        // Note: This is a placeholder for the actual verification logic
-        // You'll need to implement the specific signature verification algorithm
-        // based on your cryptographic requirements
-        
-        return ecverify(message, r, s, pubKey);
-    }
-    
-    // Placeholder for the actual verification function
-    function ecverify(
-        bytes32 message,
-        bytes32 r,
         bytes32 s,
-        bytes32 pubKey
-    ) internal pure returns (bool) {
-        // Implement your specific signature verification algorithm here
-        // This might involve elliptic curve operations depending on your needs
+        uint8 v
+    ) external view returns (bool) {
+        require(usersByHash[eHash].exists, "User not registered");
         
-        // Return true if signature is valid, false otherwise
-        return false; // Placeholder return
+        bytes32 ethSignedMessageHash = MessageHashUtils.toEthSignedMessageHash(message);
+        address recoveredSigner = ECDSA.recover(ethSignedMessageHash, v, r, s);
+        
+        return recoveredSigner == usersByHash[eHash].addr;
     }
 }
