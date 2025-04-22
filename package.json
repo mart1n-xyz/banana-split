@@ -18,7 +18,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^2.0.12",
-    "@privy-io/react-auth": "1.98.1",
+    "@privy-io/react-auth": "^2.10.0",
     "@privy-io/server-auth": "1.16.11",
     "@tailwindcss/forms": "^0.5.3",
     "next": "latest",
@@ -31,6 +31,7 @@
     "@tsconfig/strictest": "^2.0.1",
     "@types/node": "^18",
     "@types/react": "18.2.0",
+    "@types/yargs": "^17.0.33",
     "autoprefixer": "^10.4.7",
     "dotenv-cli": "^6.0.0",
     "eslint": "^8.23.0",
