@@ -42,133 +42,173 @@ export default function Dashboard() {
     return null;
   }
 
-  const UserInfoTab = () => {
+  const HomeTab = () => {
     const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
-    const [showHelpModal, setShowHelpModal] = useState(false);
+    const [shotCount, setShotCount] = useState(0);
+    const position = 1; // Fixed placeholder position
 
-    const HelpModal = () => (
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-auto p-8 transform transition-all">
-          <div className="text-center">
-            <h3 className="text-2xl font-lobster text-[#4A2B1B] mb-4">
-              How to Collect Bananas
-            </h3>
-            <div className="text-left space-y-4 text-[#4A2B1B]/80">
-              <p>
-                Start your journey by collecting bananas from your IFT colleagues! Here's how:
-              </p>
-              <ol className="list-decimal pl-5 space-y-2">
-                <li>Find colleagues wearing IFT badges with QR codes</li>
-                <li>Scan their badge's QR code using your phone's camera</li>
-                <li>Connect with them through the app</li>
-                <li>Watch your banana collection grow!</li>
-              </ol>
-              <p className="italic mt-6">
-                Each successful connection adds a banana to your journey. 
-                Complete your collection to unlock a sweet surprise! 🍫
-              </p>
+    const handleShot = () => {
+      setShotCount(prev => prev + 1);
+    };
+
+    const text = "PROMASTERLEGENDGOD";
+    const words = [
+      { text: "PRO", color: "#00FF00" },
+      { text: "MASTER", color: "#0000FF" },
+      { text: "LEGEND", color: "#FFA500" },
+      { text: "GOD", color: "#FF0000" }
+    ];
+
+    const renderAnimatedText = () => {
+      let currentIndex = 0;
+      const isProComplete = shotCount >= 3; // PRO is 3 letters
+      const isMasterComplete = shotCount >= 9; // PRO + MASTER is 9 letters
+      const isLegendComplete = shotCount >= 15; // PRO + MASTER + LEGEND is 15 letters
+      const isGodComplete = shotCount >= 18; // PRO + MASTER + LEGEND + GOD is 18 letters
+
+      return (
+        <div className="flex flex-col items-center">
+          {!isProComplete && (
+            <div className="mb-4">
+              <img 
+                src="/images/not sure.png" 
+                alt="Not sure" 
+                className="w-80 h-80 object-contain"
+              />
             </div>
-            <button
-              onClick={() => setShowHelpModal(false)}
-              className="mt-8 px-6 py-2 bg-[#4A2B1B] text-white rounded-lg font-medium 
-                       hover:bg-opacity-90 transition-colors duration-200"
-            >
-              Got it!
-            </button>
+          )}
+          {isProComplete && !isMasterComplete && (
+            <div className="mb-4">
+              <img 
+                src="/images/family.jpg" 
+                alt="Family" 
+                className="w-80 h-80 object-contain"
+              />
+            </div>
+          )}
+          {isMasterComplete && !isLegendComplete && (
+            <div className="mb-4">
+              <img 
+                src="/images/yoga.webp" 
+                alt="Yoga" 
+                className="w-80 h-80 object-contain"
+              />
+            </div>
+          )}
+          {isLegendComplete && !isGodComplete && (
+            <div className="mb-4">
+              <img 
+                src="/images/redbull.jpeg" 
+                alt="Red Bull" 
+                className="w-80 h-80 object-contain"
+              />
+            </div>
+          )}
+          {isGodComplete && (
+            <div className="mb-4">
+              <img 
+                src="/images/skeleton.jpg" 
+                alt="Skeleton" 
+                className="w-80 h-80 object-contain"
+              />
+            </div>
+          )}
+          <div className="flex flex-wrap justify-center gap-1 font-['Press_Start_2P'] text-2xl min-h-[2.5rem]">
+            {words.map((word, wordIndex) => {
+              const wordLength = word.text.length;
+              const isWordComplete = shotCount >= currentIndex + wordLength;
+              const wordProgress = Math.min(wordLength, Math.max(0, shotCount - currentIndex));
+              
+              const letters = word.text.split('').map((letter, letterIndex) => {
+                const isVisible = letterIndex < wordProgress;
+                const bounceClass = isWordComplete ? 'animate-bounce' : '';
+                
+                return (
+                  <span
+                    key={`${wordIndex}-${letterIndex}`}
+                    className={`inline-block ${bounceClass} ${isVisible ? 'opacity-100' : 'hidden'}`}
+                    style={{
+                      color: word.color,
+                      animationDelay: isWordComplete ? `${letterIndex * 0.1}s` : '0s'
+                    }}
+                  >
+                    {letter}
+                  </span>
+                );
+              });
+              
+              currentIndex += wordLength;
+              return (
+                <div key={wordIndex} className="inline-block mx-1">
+                  {letters}
+                </div>
+              );
+            })}
           </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     return (
-      <div className="max-w-xl mx-auto p-4">
-        {/* Connections Section - Highlighted */}
-        <div className="mb-12 text-center">
-          <div className="relative inline-block">
-            <h1 className="text-3xl font-lobster text-[#4A2B1B] mb-6">Your Journey</h1>
-            <button
-              onClick={() => setShowHelpModal(true)}
-              className="absolute -right-8 top-1 text-[#4A2B1B]/60 hover:text-[#4A2B1B] 
-                       transition-colors duration-200"
-              title="Learn how to collect bananas"
-            >
-              <svg 
-                className="w-5 h-5" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
-                />
-              </svg>
-            </button>
+      <div className="max-w-xl mx-auto p-4 space-y-6">
+        {/* Drink Counter Section */}
+        <div className="bg-gradient-to-br from-[#C0C0C0] to-[#D4D0C8] p-6 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080] shadow-[2px_2px_4px_0px_rgba(0,0,0,0.2)]">
+          <h2 className="text-lg font-['Press_Start_2P'] text-[#000080] mb-6 text-center">Take Your Shot!</h2>
+          
+          {/* Animated Text */}
+          <div className="mb-6">
+            {renderAnimatedText()}
           </div>
-          <div className="bg-white/40 rounded-xl p-8 shadow-lg">
-            <div className="bg-white/50 p-6 rounded-lg inline-block">
-              <div className="flex items-center justify-center gap-1.5 flex-wrap max-w-md mx-auto">
-                <div className="flex flex-wrap justify-center gap-1.5 w-full">
-                  {/* First row (1-8) */}
-                  <div className="flex gap-1.5 flex-wrap basis-full sm:basis-auto">
-                    {[...Array(8)].map((_, index) => (
-                      <div 
-                        key={index}
-                        className={`text-2xl transition-all duration-300 transform
-                                  ${index < 8 ? 'opacity-100 scale-100' : 'opacity-30 scale-90'} 
-                                  hover:scale-110 cursor-default`}
-                        title={index < 8 ? 'Active connection' : 'Future connection'}
-                      >
-                        🍌
-                      </div>
-                    ))}
-                  </div>
-                  {/* Second row (9-14 + goal) */}
-                  <div className="flex gap-1.5 flex-wrap justify-center">
-                    {[...Array(6)].map((_, index) => (
-                      <div 
-                        key={index + 8}
-                        className="text-2xl opacity-30 scale-90 transition-all duration-300
-                                  hover:scale-110 cursor-default"
-                        title="Future connection"
-                      >
-                        🍌
-                      </div>
-                    ))}
-                    {/* Goal Icon */}
-                    <div className="ml-1 text-2xl opacity-30 transform scale-90 transition-all duration-300
-                                  hover:scale-110 cursor-default flex items-center"
-                         title="Goal: Complete your collection!"
-                    >
-                      <span className="relative">
-                        <span className="absolute -right-1 -top-1 text-sm">🎯</span>
-                        🎊
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4 text-base text-[#4A2B1B]/80 font-medium">
-                8 connections made
-              </div>
+
+          {/* Counter Text */}
+          <div className="text-center mb-6">
+            <div className="text-sm font-['Press_Start_2P'] text-[#000080] bg-white p-3 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080] shadow-inner inline-block">
+              {shotCount} shots taken
             </div>
+          </div>
+
+          {/* Drink Button */}
+          <div className="text-center">
+            <button
+              onClick={handleShot}
+              className="text-sm font-['Press_Start_2P'] text-[#000080] hover:bg-[#000080] hover:text-white
+                border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]
+                active:border-t-[#808080] active:border-l-[#808080] active:border-r-[#FFFFFF] active:border-b-[#FFFFFF]
+                active:translate-x-[2px] active:translate-y-[2px] px-8 py-4 
+                bg-gradient-to-br from-[#C0C0C0] to-[#D4D0C8] hover:bg-[#000080]
+                shadow-[2px_2px_4px_0px_rgba(0,0,0,0.2)] hover:shadow-[1px_1px_2px_0px_rgba(0,0,0,0.2)]"
+            >
+              Take a Shot!
+            </button>
           </div>
         </div>
 
-        {showHelpModal && <HelpModal />}
+        {/* Position Section */}
+        <div className="bg-gradient-to-br from-[#C0C0C0] to-[#D4D0C8] p-6 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080] shadow-[2px_2px_4px_0px_rgba(0,0,0,0.2)]">
+          <h2 className="text-lg font-['Press_Start_2P'] text-[#000080] mb-4 text-center">Your Position</h2>
+          <div className="text-center">
+            <div className="text-4xl font-['Press_Start_2P'] text-[#000080] bg-white p-4 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080] shadow-inner inline-block">
+              #{position}
+            </div>
+            <p className="text-sm font-['Press_Start_2P'] text-[#000080] mt-2">on the leaderboard</p>
+          </div>
+        </div>
 
         {/* User Information Section */}
-        <div className="relative">
-          <div className="flex justify-between items-center mb-2">
+        <div className="bg-gradient-to-br from-[#C0C0C0] to-[#D4D0C8] p-6 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080] shadow-[2px_2px_4px_0px_rgba(0,0,0,0.2)]">
+          <div className="flex justify-between items-center mb-4">
             <button
               onClick={() => setIsUserInfoOpen(!isUserInfoOpen)}
-              className="flex items-center gap-2 text-xl font-semibold text-[#4A2B1B] hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2 text-sm font-['Press_Start_2P'] text-[#000080] hover:bg-[#000080] hover:text-white
+                border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]
+                active:border-t-[#808080] active:border-l-[#808080] active:border-r-[#FFFFFF] active:border-b-[#FFFFFF]
+                active:translate-x-[2px] active:translate-y-[2px] px-4 py-2 
+                bg-gradient-to-br from-[#C0C0C0] to-[#D4D0C8] hover:bg-[#000080]
+                shadow-[2px_2px_4px_0px_rgba(0,0,0,0.2)] hover:shadow-[1px_1px_2px_0px_rgba(0,0,0,0.2)]"
             >
               <span>User Information</span>
               <svg 
-                className={`w-5 h-5 transition-transform ${isUserInfoOpen ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 transition-transform ${isUserInfoOpen ? 'rotate-180' : ''}`}
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24"
@@ -178,10 +218,12 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => logout()}
-              className="px-4 py-2 text-base text-[#4A2B1B] 
-                       rounded-lg transform transition-all duration-200
-                       hover:bg-[#4A2B1B]/10 active:scale-95
-                       border border-[#4A2B1B]"
+              className="text-sm font-['Press_Start_2P'] text-[#000080] hover:bg-[#000080] hover:text-white
+                border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]
+                active:border-t-[#808080] active:border-l-[#808080] active:border-r-[#FFFFFF] active:border-b-[#FFFFFF]
+                active:translate-x-[2px] active:translate-y-[2px] px-4 py-2 
+                bg-gradient-to-br from-[#C0C0C0] to-[#D4D0C8] hover:bg-[#000080]
+                shadow-[2px_2px_4px_0px_rgba(0,0,0,0.2)] hover:shadow-[1px_1px_2px_0px_rgba(0,0,0,0.2)]"
             >
               Logout
             </button>
@@ -191,29 +233,33 @@ export default function Dashboard() {
           <div className={`transition-all duration-300 overflow-hidden ${
             isUserInfoOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
           }`}>
-            <div className="space-y-6 bg-white/30 rounded-xl p-6 mt-4">
+            <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-semibold text-[#4A2B1B] mb-3">Email</h3>
-                <div className="text-[#4A2B1B] bg-white/50 p-4 rounded-lg text-lg">
+                <h3 className="text-sm font-['Press_Start_2P'] text-[#000080] mb-2">Email</h3>
+                <div className="text-[#000080] bg-white p-4 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080] text-sm font-['Press_Start_2P'] shadow-inner">
                   {user?.email?.address || 'Not provided'}
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-[#4A2B1B] mb-3">Wallet Address</h3>
+                <h3 className="text-sm font-['Press_Start_2P'] text-[#000080] mb-2">Wallet Address</h3>
                 <ul className="space-y-4">
                   {user?.linkedAccounts
                     ?.filter(account => account.type === 'wallet')
                     .map((wallet) => (
                       <li key={wallet.address} className="space-y-2">
-                        <div className="font-mono text-sm text-[#4A2B1B] bg-white/50 p-4 rounded-lg 
-                                     break-all">
+                        <div className="font-['Press_Start_2P'] text-sm text-[#000080] bg-white p-4 
+                                     border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]
+                                     break-all shadow-inner">
                           {wallet.address}
                         </div>
                         <button
                           onClick={() => exportWallet({ address: wallet.address })}
-                          className="text-sm text-[#4A2B1B] hover:bg-[#4A2B1B]/5 px-3 py-1.5 
-                                   rounded-lg transition-colors duration-200
-                                   border border-[#4A2B1B]/30 hover:border-[#4A2B1B]"
+                          className="text-sm font-['Press_Start_2P'] text-[#000080] hover:bg-[#000080] hover:text-white
+                                   border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]
+                                   active:border-t-[#808080] active:border-l-[#808080] active:border-r-[#FFFFFF] active:border-b-[#FFFFFF]
+                                   active:translate-x-[2px] active:translate-y-[2px] px-4 py-2 
+                                   bg-gradient-to-br from-[#C0C0C0] to-[#D4D0C8] hover:bg-[#000080]
+                                   shadow-[2px_2px_4px_0px_rgba(0,0,0,0.2)] hover:shadow-[1px_1px_2px_0px_rgba(0,0,0,0.2)]"
                         >
                           Export Private Key
                         </button>
@@ -228,262 +274,55 @@ export default function Dashboard() {
     );
   };
 
-  const PeelAndPlayTab = () => (
-    <div className="max-w-xl mx-auto p-4">
-      <h1 className="text-3xl font-lobster text-[#4A2B1B] mb-8 text-center">Peel & Play Games</h1>
-      <div className="space-y-6">
-        {[
-          {
-            title: "Banana Bounce",
-            description: "A multiplayer game where you bounce bananas between players to score points",
-            link: "#banana-bounce",
-            comingSoon: true
-          },
-          {
-            title: "Split Runner",
-            description: "Run through obstacles while collecting banana splits. Challenge your friends!",
-            link: "#split-runner",
-            comingSoon: true
-          },
-          {
-            title: "Choco Chase",
-            description: "Strategy game: collect chocolate pieces while avoiding melting zones",
-            link: "#choco-chase",
-            comingSoon: true
-          }
-        ].map((game) => (
-          <div key={game.title} className="bg-white/30 rounded-xl p-6">
-            <div className="flex justify-between items-start">
-              <h2 className="text-xl font-semibold text-[#4A2B1B]">{game.title}</h2>
-              {game.comingSoon && (
-                <span className="text-xs bg-[#4A2B1B]/10 text-[#4A2B1B] px-2 py-1 rounded-full">
-                  Coming Soon
-                </span>
-              )}
-            </div>
-            <p className="mt-2 text-[#4A2B1B]/80">{game.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  const SundaeGangTab = () => {
-    const connections = [
-      {
-        address: "0x7Fc...3aB9",
-        name: "Alice from DevOps",
-        score: 2840,
-        date: "2024-03-15",
-        inBananaBowl: true
-      },
-      {
-        address: "0x3eD...9F12",
-        name: "Bob from Frontend",
-        score: 2150,
-        date: "2024-03-14",
-        inBananaBowl: true
-      },
-      {
-        address: "0x1bA...4C23",
-        name: "Charlie from Design",
-        score: 1950,
-        date: "2024-03-13",
-        inBananaBowl: true
-      },
-      {
-        address: "0x9cF...6D45",
-        name: "Diana from Backend",
-        score: 1850,
-        date: "2024-03-12",
-        inBananaBowl: true
-      },
-      {
-        address: "0x5dE...8B67",
-        name: "Eve from QA",
-        score: 1750,
-        date: "2024-03-11",
-        inBananaBowl: true
-      },
-      {
-        address: "0x2fA...7E34",
-        name: "Frank from Security",
-        score: 1650,
-        date: "2024-03-10",
-        inBananaBowl: false
-      },
-      {
-        address: "0x8Bc...1D56",
-        name: "Grace from Product",
-        score: 1550,
-        date: "2024-03-09",
-        inBananaBowl: false
-      },
-      {
-        address: "0x4dC...9H78",
-        name: "Henry from Marketing",
-        score: 1450,
-        date: "2024-03-08",
-        inBananaBowl: false
-      }
+  const LeaderboardTab = () => {
+    const leaderboardData = [
+      { address: "0x1234...5678", shots: 42, isCurrentUser: true },
+      { address: "0x8765...4321", shots: 38 },
+      { address: "0xabcd...efgh", shots: 35 },
+      { address: "0xijkl...mnop", shots: 32 },
+      { address: "0xqrst...uvwx", shots: 28 },
+      { address: "0xyzaa...bbcc", shots: 25 },
+      { address: "0xdddd...eeee", shots: 22 },
+      { address: "0xffff...gggg", shots: 20 },
+      { address: "0xhhhh...iiii", shots: 18 },
+      { address: "0xjjjj...kkkk", shots: 15 }
     ];
 
     return (
-      <div className="max-w-xl mx-auto p-4">
-        <h1 className="text-3xl font-lobster text-[#4A2B1B] mb-2 text-center">Sundae Gang</h1>
-        <p className="text-center text-[#4A2B1B]/80 mb-8">
-          These are all your Banana Split connections.<br />
-          Build your team in Banana Bowl from these sweet friends!
-        </p>
-        <div className="space-y-4">
-          {connections.map((connection) => (
-            <div 
-              key={connection.address} 
-              className={`bg-white/30 rounded-xl p-6 ${
-                connection.inBananaBowl ? 'ring-2 ring-[#4A2B1B]/20' : ''
-              }`}
-            >
-              <div className="flex items-start justify-between mb-2">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-semibold text-[#4A2B1B]">{connection.name}</h2>
-                    {connection.inBananaBowl && (
-                      <span className="text-xs bg-[#4A2B1B]/10 text-[#4A2B1B] px-2 py-1 rounded-full">
-                        On Your Team
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm font-mono text-[#4A2B1B]/70">{connection.address}</p>
-                </div>
-                <div className="text-right">
-                  <div className="text-lg font-semibold text-[#4A2B1B]">{connection.score}</div>
-                  <div className="text-xs text-[#4A2B1B]/60">points</div>
-                </div>
-              </div>
-              <div className="text-sm text-[#4A2B1B]/60 mt-2">
-                Connected on {new Date(connection.date).toLocaleDateString()}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const BananaBowlTab = () => {
-    const [hasTeam, setHasTeam] = useState(false);
-    
-    // Team members with their scores (matching the ones from SundaeGangTab)
-    const teamMembers = [
-      { address: "0x7Fc...3aB9", score: 2840 },
-      { address: "0x3eD...9F12", score: 2150 },
-      { address: "0x1bA...4C23", score: 1950 },
-      { address: "0x9cF...6D45", score: 1850 },
-      { address: "0x5dE...8B67", score: 1750 }
-    ];
-
-    const totalTeamScore = teamMembers.reduce((sum, member) => sum + member.score, 0);
-
-    return (
-      <div className="max-w-xl mx-auto p-4">
-        <h1 className="text-3xl font-lobster text-[#4A2B1B] mb-8 text-center">Banana Bowl</h1>
-        <div className="bg-white/30 rounded-xl p-6 mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-[#4A2B1B]">Your Fantasy Team</h2>
-            {hasTeam && (
-              <div className="text-right">
-                <div className="text-2xl font-semibold text-[#4A2B1B]">{totalTeamScore}</div>
-                <div className="text-xs text-[#4A2B1B]/60">team points</div>
-              </div>
-            )}
-          </div>
-          {!hasTeam ? (
-            <div className="text-center py-8">
-              <p className="text-[#4A2B1B]/80 mb-4">
-                Create your dream team from your Banana Split connections!
-                Choose 5 players wisely - you can only nominate once.
-              </p>
-              <button
-                className="px-6 py-2.5 text-lg bg-[#4A2B1B] text-[#FFF5EA] 
-                         rounded-lg transform transition-all duration-200
-                         hover:bg-[#3A1F14] active:scale-95"
-                onClick={() => setHasTeam(true)}
-              >
-                Create Team
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <p className="text-[#4A2B1B]/80 mb-4">Your team is competing! Check the ChocoTop leaderboard for rankings.</p>
-              <div className="grid grid-cols-2 gap-4">
-                {teamMembers.map((member) => (
-                  <div key={member.address} className="bg-white/50 p-3 rounded-lg">
-                    <div className="font-mono text-sm">{member.address}</div>
-                    <div className="text-sm text-[#4A2B1B]/60 mt-1">{member.score} points</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  const ChocoTopTab = () => {
-    const LeaderboardSection = ({ title, data }: { title: string, data: Array<{ address: string, score: number }> }) => (
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold text-[#4A2B1B] mb-4">{title}</h2>
-        <div className="bg-white/30 rounded-xl p-4">
+      <div className="max-w-2xl mx-auto p-4">
+        <div className="bg-gradient-to-br from-[#C0C0C0] to-[#D4D0C8] p-6 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080] shadow-[2px_2px_4px_0px_rgba(0,0,0,0.2)]">
+          <h2 className="text-lg font-['Press_Start_2P'] text-[#000080] mb-6 text-center">Leaderboard</h2>
+          
           <div className="space-y-2">
-            {data.map(({ address, score }, index) => (
-              <div key={address} className="flex items-center bg-white/50 p-3 rounded-lg">
-                <span className="w-8 font-semibold text-[#4A2B1B]">#{index + 1}</span>
-                <span className="flex-grow font-mono text-sm">{address}</span>
-                <span className="font-semibold text-[#4A2B1B]">{score}</span>
+            {leaderboardData.map((entry, index) => (
+              <div 
+                key={index}
+                className={`flex justify-between items-center p-3 border-2 
+                  ${index === 0 
+                    ? 'border-t-[#800080] border-l-[#800080] border-r-[#4B0082] border-b-[#4B0082] bg-gradient-to-br from-[#800080] to-[#4B0082] text-white' 
+                    : 'border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080] bg-white'
+                  }`}
+              >
+                <div className="flex items-center gap-4">
+                  <span className={`font-['Press_Start_2P'] ${index === 0 ? 'text-white' : 'text-[#000080]'}`}>
+                    #{index + 1}
+                  </span>
+                  <span className={`font-['Press_Start_2P'] ${index === 0 ? 'text-white' : 'text-[#000080]'}`}>
+                    {entry.address}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`font-['Press_Start_2P'] ${index === 0 ? 'text-white' : 'text-[#000080]'}`}>
+                    {entry.shots}
+                  </span>
+                  <span className={`font-['Press_Start_2P'] text-sm ${index === 0 ? 'text-white' : 'text-[#000080]'}`}>
+                    shots
+                  </span>
+                </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
-    );
-
-    return (
-      <div className="max-w-xl mx-auto p-4">
-        <h1 className="text-3xl font-lobster text-[#4A2B1B] mb-8 text-center">ChocoTop</h1>
-        
-        <LeaderboardSection 
-          title="Most Connections" 
-          data={[
-            { address: "0x7Fc...3aB9", score: 14 },
-            { address: "0x3eD...9F12", score: 12 },
-            { address: "0x1bA...4C23", score: 11 },
-            { address: "0x9cF...6D45", score: 9 },
-            { address: "0x5dE...8B67", score: 8 },
-          ]}
-        />
-        
-        <LeaderboardSection 
-          title="Peel & Play Champions" 
-          data={[
-            { address: "0x2fA...7E34", score: 2840 },
-            { address: "0x8Bc...1D56", score: 2650 },
-            { address: "0x4dC...9H78", score: 2470 },
-            { address: "0x6eB...2K90", score: 2280 },
-            { address: "0x0aF...5L12", score: 2150 },
-          ]}
-        />
-        
-        <LeaderboardSection 
-          title="Banana Bowl Fantasy League" 
-          data={[
-            { address: "0x9Hc...4M67", score: 8750 },
-            { address: "0x5jD...8N89", score: 8420 },
-            { address: "0x1kE...2P01", score: 8150 },
-            { address: "0x7mF...6Q23", score: 7980 },
-            { address: "0x3nG...0R45", score: 7840 },
-          ]}
-        />
       </div>
     );
   };
@@ -491,46 +330,15 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-        <title>Dashboard · Banana Split</title>
+        <title>RAKIJA.pump</title>
+        <link rel="icon" href="/favicons/favicon.ico" />
       </Head>
-
-      <main className="min-h-screen bg-[#FFF5EA] flex flex-col">
-        <div className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <TabLayout
-            defaultTab="Home"
-            tabs={[
-              {
-                label: 'Home',
-                content: <UserInfoTab />,
-              },
-              {
-                label: 'Sundae Gang',
-                content: <SundaeGangTab />,
-              },
-              {
-                label: 'Peel & Play',
-                content: <PeelAndPlayTab />,
-              },
-              {
-                label: 'Banana Bowl',
-                content: <BananaBowlTab />,
-              },
-              {
-                label: 'ChocoTop',
-                content: <ChocoTopTab />,
-              },
-            ]}
-          />
-        </div>
-        
-        {/* Footer with debug links */}
-        <footer className="border-t border-[#4A2B1B]/10 py-4 px-4">
-          <div className="max-w-7xl mx-auto flex justify-center space-x-4 text-sm text-[#4A2B1B]/60">
-            <Link href="/debug" className="hover:text-[#4A2B1B]">Debug</Link>
-            <Link href="/link-log" className="hover:text-[#4A2B1B]">Link Log</Link>
-          </div>
-        </footer>
-      </main>
+      <TabLayout
+        tabs={[
+          { label: "Drink!", content: <HomeTab /> },
+          { label: "Leaderboard", content: <LeaderboardTab /> }
+        ]}
+      />
     </>
   );
 }

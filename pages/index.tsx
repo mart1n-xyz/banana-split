@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 };
 
-export default function LoginPage() {
+export default function Home() {
   const router = useRouter();
 
   const { login } = useLogin({
@@ -68,65 +68,35 @@ export default function LoginPage() {
   return (
     <>
       <Head>
-        <title>Login · Banana Split</title>
-        <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet" />
+        <title>RAKIJA.pump</title>
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
       </Head>
 
-      <main className="flex min-h-screen min-w-full">
-        <div className="flex bg-[#FFF5EA] flex-1 p-6 justify-center items-center">
-          <div>
-            <div className="relative mb-12">
-              <h1 className="text-7xl font-lobster text-[#4A2B1B] text-center transform -rotate-6">
-                BANANA SPLIT
+      <main className="flex min-h-screen min-w-full bg-[#008080]">
+        <div className="flex flex-1 p-6 justify-center items-center">
+          <div className="bg-[#C0C0C0] p-4 border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080] shadow-[2px_2px_0px_0px_#000000]">
+            <div className="mb-8">
+              <h1 className="text-4xl font-['Press_Start_2P'] text-center text-[#800080] mb-4">
+                RAKIJA.pump
               </h1>
-            </div>
-            <div className="w-1/2 mx-auto relative">
-              <div className="relative">
-                {/* Main image */}
+
+              <div className="bg-[#C0C0C0] p-4 border-2 border-t-[#808080] border-l-[#808080] border-r-[#FFFFFF] border-b-[#FFFFFF]">
                 <img 
-                  src="/images/bananasplit.webp" 
-                  alt="Banana Split"
+                  src="/images/welcome meme.jpeg" 
+                  alt="Rakija Welcome"
                   className="max-w-full h-auto"
                 />
-
-                {/* Inner painted edges */}
-                <div className="absolute inset-0 border-[16px] border-[#4A2B1B] opacity-90 z-10"></div>
-                
-                {/* Decorative corners */}
-                <div className="absolute top-0 left-0 w-12 h-12 border-l-4 border-t-4 border-[#4A2B1B] z-20"></div>
-                <div className="absolute top-0 right-0 w-12 h-12 border-r-4 border-t-4 border-[#4A2B1B] z-20"></div>
-                <div className="absolute bottom-0 left-0 w-12 h-12 border-l-4 border-b-4 border-[#4A2B1B] z-20"></div>
-                <div className="absolute bottom-0 right-0 w-12 h-12 border-r-4 border-b-4 border-[#4A2B1B] z-20"></div>
-                
-                {/* Decorative edges */}
-                <div className="absolute top-12 left-0 bottom-12 w-4 border-l-4 border-[#4A2B1B] z-20
-                  before:absolute before:top-0 before:left-1/2 before:-translate-x-1/2 before:w-2 before:h-2 before:bg-[#4A2B1B] before:rounded-full
-                  after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-2 after:h-2 after:bg-[#4A2B1B] after:rounded-full">
-                </div>
-                <div className="absolute top-12 right-0 bottom-12 w-4 border-r-4 border-[#4A2B1B] z-20
-                  before:absolute before:top-0 before:left-1/2 before:-translate-x-1/2 before:w-2 before:h-2 before:bg-[#4A2B1B] before:rounded-full
-                  after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-2 after:h-2 before:bg-[#4A2B1B] after:rounded-full">
-                </div>
-                <div className="absolute top-0 left-12 right-12 h-4 border-t-4 border-[#4A2B1B] z-20
-                  before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-2 before:h-2 before:bg-[#4A2B1B] before:rounded-full
-                  after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-2 after:h-2 before:bg-[#4A2B1B] after:rounded-full">
-                </div>
-                <div className="absolute bottom-0 left-12 right-12 h-4 border-b-4 border-[#4A2B1B] z-20
-                  before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-2 before:h-2 before:bg-[#4A2B1B] before:rounded-full
-                  after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-2 after:h-2 before:bg-[#4A2B1B] after:rounded-full">
-                </div>
               </div>
             </div>
-            <div className="mt-6 flex flex-col items-center text-center">
-              <button
-                className="bg-[#4A2B1B] hover:bg-[#5C3724] active:bg-[#3A2015] 
-                  py-3 px-6 text-white rounded-lg transition-colors duration-200 
-                  transform active:scale-95 active:translate-y-0.5"
-                onClick={handleLogin}
-              >
-                Open App
-              </button>
-            </div>
+            
+            <button
+              className="w-full bg-[#C0C0C0] p-2 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080] 
+                active:border-t-[#808080] active:border-l-[#808080] active:border-r-[#FFFFFF] active:border-b-[#FFFFFF]
+                active:translate-x-[2px] active:translate-y-[2px]"
+              onClick={handleLogin}
+            >
+              <span className="font-['Press_Start_2P'] text-sm">Someone insisted</span>
+            </button>
           </div>
         </div>
       </main>
