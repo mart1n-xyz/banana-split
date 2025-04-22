@@ -15,14 +15,14 @@ export default function TabLayout({ defaultTab, tabs }: TabLayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="w-full">
+    <div className="w-full min-h-screen bg-[#008080]">
       {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-10 bg-[#FFF5EA] border-b border-[#4A2B1B]/10">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-10 bg-[#C0C0C0] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]">
         <div className="flex items-center justify-between h-16 px-4">
-          <span className="text-xl font-lobster text-[#4A2B1B]">{activeTab}</span>
+          <span className="text-xl font-['Press_Start_2P'] text-[#000080]">{activeTab}</span>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="w-10 h-10 flex items-center justify-center text-[#4A2B1B]/60 hover:text-[#4A2B1B]"
+            className="w-10 h-10 flex items-center justify-center text-[#000080] hover:bg-[#000080] hover:text-white"
           >
             <svg 
               className="w-6 h-6" 
@@ -42,12 +42,12 @@ export default function TabLayout({ defaultTab, tabs }: TabLayoutProps) {
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-20 bg-[#FFF5EA]">
-          <div className="h-16 flex items-center justify-between px-4 border-b border-[#4A2B1B]/10">
-            <span className="text-xl font-lobster text-[#4A2B1B]">Menu</span>
+        <div className="lg:hidden fixed inset-0 z-20 bg-[#C0C0C0] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]">
+          <div className="h-16 flex items-center justify-between px-4 border-b-2 border-t-[#808080] border-l-[#808080] border-r-[#FFFFFF] border-b-[#FFFFFF]">
+            <span className="text-xl font-['Press_Start_2P'] text-[#000080]">Menu</span>
             <button
               onClick={() => setIsMenuOpen(false)}
-              className="w-10 h-10 flex items-center justify-center text-[#4A2B1B]/60 hover:text-[#4A2B1B]"
+              className="w-10 h-10 flex items-center justify-center text-[#000080] hover:bg-[#000080] hover:text-white"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -63,10 +63,13 @@ export default function TabLayout({ defaultTab, tabs }: TabLayoutProps) {
                     setActiveTab(tab.label);
                     setIsMenuOpen(false);
                   }}
-                  className={`w-full p-4 text-center font-lobster text-lg rounded-lg
+                  className={`w-full p-4 text-center font-['Press_Start_2P'] text-sm rounded-none
+                    border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]
+                    active:border-t-[#808080] active:border-l-[#808080] active:border-r-[#FFFFFF] active:border-b-[#FFFFFF]
+                    active:translate-x-[2px] active:translate-y-[2px]
                     ${activeTab === tab.label
-                      ? 'text-[#4A2B1B] bg-[#4A2B1B]/5'
-                      : 'text-[#4A2B1B]/60 hover:text-[#4A2B1B] hover:bg-[#4A2B1B]/5'
+                      ? 'bg-[#000080] text-white'
+                      : 'bg-[#C0C0C0] text-[#000080] hover:bg-[#000080] hover:text-white'
                     }
                   `}
                 >
@@ -79,34 +82,34 @@ export default function TabLayout({ defaultTab, tabs }: TabLayoutProps) {
       )}
 
       {/* Desktop Tabs */}
-      <div className="hidden lg:block border-b border-[#4A2B1B]/10">
-        <div className="flex space-x-8 px-4">
+      <div className="hidden lg:block">
+        <div className="flex justify-center space-x-2 p-2 bg-[#C0C0C0] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]">
           {tabs.map((tab) => (
             <button
               key={tab.label}
               onClick={() => setActiveTab(tab.label)}
-              className="group relative py-4 px-1"
-            >
-              <span className={`font-lobster text-lg whitespace-nowrap
+              className={`px-4 py-2 font-['Press_Start_2P'] text-sm
+                border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]
+                active:border-t-[#808080] active:border-l-[#808080] active:border-r-[#FFFFFF] active:border-b-[#FFFFFF]
+                active:translate-x-[2px] active:translate-y-[2px]
                 ${activeTab === tab.label
-                  ? 'text-[#4A2B1B]'
-                  : 'text-[#4A2B1B]/60 group-hover:text-[#4A2B1B]/80'
+                  ? 'bg-[#000080] text-white'
+                  : 'bg-[#C0C0C0] text-[#000080] hover:bg-[#000080] hover:text-white'
                 }
-              `}>
-                {tab.label}
-              </span>
-              {activeTab === tab.label && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#4A2B1B]" />
-              )}
+              `}
+            >
+              {tab.label}
             </button>
           ))}
         </div>
       </div>
 
       {/* Content */}
-      <div className="lg:mt-8">
+      <div className="lg:mt-4 p-4">
         <div className="mt-16 lg:mt-0">
-          {tabs.find((tab) => tab.label === activeTab)?.content}
+          <div className="bg-[#C0C0C0] p-4 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#808080] border-b-[#808080]">
+            {tabs.find((tab) => tab.label === activeTab)?.content}
+          </div>
         </div>
       </div>
     </div>
